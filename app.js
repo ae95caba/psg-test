@@ -29,13 +29,13 @@ client.connect((err) => {
 app.get("/get-all", async (req, res) => {
   try {
     const queryProducts = `
-    SELECT productos.id, productos.nombre, categorias.nombre AS categoria
+    SELECT productos.id, productos.nombre AS name, productos.agregado_el AS "createdTime", categorias.nombre AS category
     FROM productos
     JOIN categorias ON productos.categoria_id = categorias.id;
   `;
     const resultProducts = await client.query(queryProducts); // replace 'your_table_name' with your table name
     const queryImages = `
-    SELECT imagenes.id, imagenes.imagen_url, imagenes.producto_id 
+    SELECT imagenes.id, imagenes.imagen_url AS url, imagenes.producto_id  AS product_id
     FROM imagenes
     
   `;
@@ -45,13 +45,16 @@ app.get("/get-all", async (req, res) => {
     const images = resultImages.rows;
     // Step 2: Transform the Data
     const productMap = products.reduce((acc, product) => {
-      acc[product.id] = { ...product, imagenes: [] };
+      acc[product.id] = { ...product, images: [] };
       return acc;
     }, {});
 
     images.forEach((image) => {
-      if (productMap[image.producto_id]) {
-        productMap[image.producto_id].imagenes.push(image.imagen_url);
+      if (productMap[image.product_id]) {
+        productMap[image.product_id].images.push({
+          url: image.url,
+          id: image.id,
+        });
       }
     });
 
