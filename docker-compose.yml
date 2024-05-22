@@ -40,7 +40,7 @@ x-config: &config
   # (Optional) Replace 'http://localhost' with custom domain(s) e.g.
   # 'yourdomain.com, 127.0.0.1' to manage the host(s) at which you want to
   # access Mathesar over http or https
-  DOMAIN_NAME: ${DOMAIN_NAME:-0.0.0.0}
+  DOMAIN_NAME: ${DOMAIN_NAME:-http://localhost, https://capable-olivette-dasfg2t4gdfsgs-1a46fb7e.koyeb.app/ }
 
   # Edit the POSTGRES_* variables if you are not using the db service provided
   # below, or if you want to use a custom database user.
@@ -167,7 +167,7 @@ services:
       db:
         condition: service_healthy
     healthcheck:
-      test: curl -f http://0.0.0.0:8000
+      test: curl -f http://localhost:8000
       interval: 10s
       timeout: 5s
       retries: 30
