@@ -12,7 +12,7 @@ var app = express();
 
 const client = new Client({
   user: "mathesar",
-  host: "localhost", // Use the IP address of your PostgreSQL container
+  host: "mathesar_db", // Use the IP address of your PostgreSQL container
   database: "mathesar",
   password: "mathesar",
   port: "5432", // Use the port mapped to your host machine
@@ -28,6 +28,7 @@ client.connect((err) => {
 
 app.get("/get-all", async (req, res) => {
   try {
+    console.log(`get all runing`);
     const queryProducts = `
     SELECT productos.id, productos.nombre AS name, productos.agregado_el AS "createdTime", categorias.nombre AS category
     FROM productos
